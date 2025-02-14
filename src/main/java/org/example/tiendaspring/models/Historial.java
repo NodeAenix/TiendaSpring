@@ -21,23 +21,24 @@ import java.time.LocalDate;
 @Table(name = "historial")
 public class Historial {
     @Id
+    @NotNull
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
+    @NotNull(message = "El ID del cliente es obligatorio.")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @NotNull
+    @NotNull(message = "El ID del producto es obligatorio.")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "producto_id", nullable = false)
+    @JoinColumn(name = "producto_id", nullable = false, unique = true)
     private org.example.tiendaspring.models.Producto producto;
 
-    @NotNull
+    @NotNull(message = "La fecha de compra es obligatoria.")
     @Column(name = "fecha_compra", nullable = false)
     private LocalDate fechaCompra;
 

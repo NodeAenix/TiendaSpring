@@ -7,7 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -21,8 +25,11 @@ public class Producto {
     private Integer id;
 
     @Size(max = 100)
-    @NotNull
-    @Column(name = "nombre", nullable = false, length = 100)
+    @NotNull(message = "El nombre es obligatorio.")
+    @NotBlank(message = "El nombre no puede estar vacío.")
+    @Pattern(regexp = "^[a-zA-Z\\d]+$",
+             message = "El nombre solo puede estar compuesto por carácteres alfanuméricos.")
+    @Column(name = "nombre", nullable = false, length = 100, unique = true)
     private String nombre;
 
     @Lob
@@ -31,6 +38,8 @@ public class Producto {
 
     @NotNull
     @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+    @Digits(integer = 5, fraction = 2)
+    @PositiveOrZero
     private BigDecimal precio;
 
     @NotNull
