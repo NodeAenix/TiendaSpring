@@ -23,6 +23,7 @@ public class CompraController {
     public ResponseEntity<String> realizarCompra(@RequestParam String clienteNickname, @RequestParam Integer productoId, @RequestParam Integer cantidad) {
         String response = compraService.procesarCompra(clienteNickname, productoId, cantidad);
         return ResponseEntity.ok(response);
+
     }
 
 }
