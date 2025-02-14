@@ -39,7 +39,7 @@ public class ClienteController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Cliente cliente = clienteRepository.findByNickname(nickname);
+        Cliente cliente = clienteRepository.findByNickname(nickname).orElseThrow();
         return ResponseEntity.ok(cliente);
     }
 
