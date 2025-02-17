@@ -21,7 +21,6 @@ import java.time.LocalDate;
 @Table(name = "historial")
 public class Historial {
     @Id
-    @NotNull
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

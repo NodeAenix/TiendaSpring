@@ -39,11 +39,12 @@ public class Producto {
     @NotNull
     @Column(name = "precio", nullable = false, precision = 10, scale = 2)
     @Digits(integer = 5, fraction = 2)
-    @PositiveOrZero
+    @PositiveOrZero(message = "El precio no puede ser negativo")
     private BigDecimal precio;
 
     @NotNull
     @Column(name = "stock", nullable = false)
+    @PositiveOrZero(message = "El stock no puede ser negativo.")
     private Integer stock;
 
     public Integer getId() {

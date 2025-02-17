@@ -14,10 +14,9 @@ import java.time.LocalDate;
 @Service
 public class CompraService {
 
+    private final ProductoRepository productoRepository;
+    private final ClienteRepository clienteRepository;
     private final HistorialRepository historialRepository;
-    private ProductoRepository productoRepository;
-
-    private ClienteRepository clienteRepository;
 
     @Autowired
     public CompraService(ProductoRepository productoRepository, ClienteRepository clienteRepository, HistorialRepository historialRepository) {
@@ -26,7 +25,7 @@ public class CompraService {
         this.historialRepository = historialRepository;
     }
 
-    public String procesarCompra (String clienteNickname, Integer productoId, Integer cantidad) {
+    public String procesarCompra(String clienteNickname, Integer productoId, Integer cantidad) {
         Cliente cliente = clienteRepository.findByNickname(clienteNickname).orElse(null);
         if (cliente == null) {
             return "El cliente no existe";
@@ -39,8 +38,6 @@ public class CompraService {
         if (producto.getStock() < cantidad) {
             return "No hay suficientes productos en stock";
         }
-        producto.setStock(producto.getStock() - cantidad);
-        productoRepository.save(producto);
 
         Historial historial = new Historial();
         historial.setCliente(cliente);
@@ -48,6 +45,9 @@ public class CompraService {
         historial.setFechaCompra(LocalDate.now());
         historial.setCantidad(cantidad);
         historialRepository.save(historial);
+
+        producto.setStock(producto.getStock() - cantidad);
+        productoRepository.save(producto);
 
         return "Compra realizada con éxito.";
     }

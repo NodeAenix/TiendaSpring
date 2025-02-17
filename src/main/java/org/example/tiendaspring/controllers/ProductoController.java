@@ -50,12 +50,18 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<Producto> addProducto(@Valid @RequestBody Producto producto) {
+    public ResponseEntity<?> addProducto(@Valid @RequestBody Producto producto) {
+        if (productoRepository.existsByNombre(producto.getNombre())) {
+            return ResponseEntity.badRequest().body("El nombre del producto ya está en uso.");
+        }
         return ResponseEntity.ok(productoRepository.save(producto));
     }
 
     @PutMapping
-    public ResponseEntity<Producto> updateProducto(@Valid @RequestBody Producto producto) {
+    public ResponseEntity<?> updateProducto(@Valid @RequestBody Producto producto) {
+        if (productoRepository.existsByNombre(producto.getNombre())) {
+            return ResponseEntity.badRequest().body("El nombre del producto ya está en uso.");
+        }
         return ResponseEntity.ok(productoRepository.save(producto));
     }
 
