@@ -52,15 +52,21 @@ public class CompraController {
         return ResponseEntity.ok(historial);
     }
 
+    @GetMapping("/devolver/{id}")
+    public ResponseEntity<String> realizarDevolucion(@PathVariable Integer id) {
+        Historial historial = historialRepository.findById(id).orElseThrow();
+        return ResponseEntity.ok(compraService.procesarDevolucion(historial));
+    }
+
     @PostMapping
     public ResponseEntity<String> addCompra(@RequestBody CompraDTO compraDTO) {
-        String response = compraService.procesarCompra(compraDTO.getClienteNickname(), compraDTO.getProductoId(), compraDTO.getCantidad());
+        String response = compraService.procesarCompra(compraDTO);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping
     public ResponseEntity<String> updateCompra(@RequestBody CompraDTO compraDTO) {
-        String response = compraService.procesarCompra(compraDTO.getClienteNickname(), compraDTO.getProductoId(), compraDTO.getCantidad());
+        String response = compraService.procesarCompra(compraDTO);
         return ResponseEntity.ok(response);
     }
 
