@@ -1,5 +1,6 @@
 package org.example.tiendaspring.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.Valid;
 import org.example.tiendaspring.models.Producto;
 import org.example.tiendaspring.repositories.ProductoRepository;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
 @CacheConfig(cacheNames = {"productos"})
+@JsonIgnoreProperties({"cliente", "historial"})
 public class ProductoController {
 
     private ProductoRepository productoRepository;
@@ -34,20 +37,25 @@ public class ProductoController {
 
     @GetMapping
     public ResponseEntity<List<Producto>> getProductos() {
-        return ResponseEntity.ok(productoRepository.findAll());
+        List<Producto> productos = productoRepository.findAll();
+
+        productos.forEach(producto -> {
+            clasificarProductos(producto);
+        });
+
+        return ResponseEntity.ok(productos);
     }
 
     @GetMapping("/{id}")
     @Cacheable
     public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         Producto producto = productoRepository.findById(id).orElseThrow();
+
+        clasificarProductos(producto);
+
         return ResponseEntity.ok(producto);
     }
+
 
     @PostMapping
     public ResponseEntity<?> addProducto(@Valid @RequestBody Producto producto) {
@@ -69,6 +77,14 @@ public class ProductoController {
     public ResponseEntity<String> deleteProducto(@PathVariable String id) {
         productoRepository.deleteById(Integer.valueOf(id));
         return ResponseEntity.ok("Producto con ID " + id + " borrado.");
+    }
+
+    private void clasificarProductos(Producto producto) {
+        if (producto.getPrecio().compareTo(BigDecimal.valueOf(10)) < 0) {
+            producto.setDescripcion("(Producto de oferta) " + (producto.getDescripcion() != null ? producto.getDescripcion() + " " : ""));
+        } else if (producto.getPrecio().compareTo(BigDecimal.valueOf(200)) > 0) {
+            producto.setDescripcion("(Producto de calidad) " + (producto.getDescripcion() != null ? producto.getDescripcion() + " " : ""));
+        }
     }
 
 }
