@@ -1,5 +1,6 @@
 package org.example.tiendaspring.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "historial")
+@JsonIgnoreProperties({"cliente", "producto"})
 public class Historial {
     @Id
     @Column(name = "id", nullable = false)
