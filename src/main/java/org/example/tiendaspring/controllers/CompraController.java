@@ -54,7 +54,7 @@ public class CompraController {
 
     @GetMapping("/devolver/{id}")
     public ResponseEntity<String> realizarDevolucion(@PathVariable Integer id) {
-        Historial historial = historialRepository.findById(id).orElseThrow();
+        Historial historial = historialRepository.findById(id).orElse(null);
         return ResponseEntity.ok(compraService.procesarDevolucion(historial));
     }
 
