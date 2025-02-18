@@ -1,6 +1,6 @@
 package org.example.tiendaspring.controllers;
 
-import org.example.tiendaspring.CompraDTO;
+import org.example.tiendaspring.dtos.CompraDTO;
 import org.example.tiendaspring.models.Historial;
 import org.example.tiendaspring.repositories.HistorialRepository;
 import org.example.tiendaspring.services.CompraService;

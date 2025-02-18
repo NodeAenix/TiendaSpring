@@ -1,4 +1,4 @@
-package org.example.tiendaspring;
+package org.example.tiendaspring.dtos;
 
 public class CompraDTO {
 

@@ -1,6 +1,6 @@
 package org.example.tiendaspring.services;
 
-import org.example.tiendaspring.CompraDTO;
+import org.example.tiendaspring.dtos.CompraDTO;
 import org.example.tiendaspring.models.Cliente;
 import org.example.tiendaspring.models.Historial;
 import org.example.tiendaspring.models.Producto;
@@ -68,7 +68,7 @@ public class CompraService {
         productoRepository.save(producto);
 
         historialRepository.delete(historial);
-        return "Devolucion realizada con éxito";
+        return "Devolución realizada con éxito";
     }
 
 }

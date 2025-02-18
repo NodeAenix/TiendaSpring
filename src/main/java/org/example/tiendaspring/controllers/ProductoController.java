@@ -38,11 +38,7 @@ public class ProductoController {
     @GetMapping
     public ResponseEntity<List<Producto>> getProductos() {
         List<Producto> productos = productoRepository.findAll();
-
-        productos.forEach(producto -> {
-            clasificarProductos(producto);
-        });
-
+        productos.forEach(this::clasificarProductos);
         return ResponseEntity.ok(productos);
     }
 
@@ -50,12 +46,9 @@ public class ProductoController {
     @Cacheable
     public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
         Producto producto = productoRepository.findById(id).orElseThrow();
-
         clasificarProductos(producto);
-
         return ResponseEntity.ok(producto);
     }
-
 
     @PostMapping
     public ResponseEntity<?> addProducto(@Valid @RequestBody Producto producto) {
