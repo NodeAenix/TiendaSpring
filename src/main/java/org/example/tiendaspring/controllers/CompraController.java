@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,20 +37,34 @@ public class CompraController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Historial>> getCompras() {
-        return ResponseEntity.ok(historialRepository.findAll());
+    public ResponseEntity<List<CompraDTO>> getCompras() {
+        List<CompraDTO> compras = new ArrayList<>();
+        historialRepository.findAll().forEach(historial -> {
+            CompraDTO compra = new CompraDTO();
+            compra.setId(historial.getId());
+            compra.setClienteNickname(historial.getCliente().getNickname());
+            compra.setProductoId(historial.getProducto().getId());
+            compra.setCantidad(historial.getCantidad());
+            compras.add(compra);
+        });
+        return ResponseEntity.ok(compras);
     }
 
     @GetMapping("/{id}")
     @Cacheable
-    public ResponseEntity<Historial> getCompra(@PathVariable Integer id) {
+    public ResponseEntity<CompraDTO> getCompra(@PathVariable Integer id) {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         Historial historial = historialRepository.findById(id).orElseThrow();
-        return ResponseEntity.ok(historial);
+        CompraDTO compra = new CompraDTO();
+        compra.setId(historial.getId());
+        compra.setClienteNickname(historial.getCliente().getNickname());
+        compra.setProductoId(historial.getProducto().getId());
+        compra.setCantidad(historial.getCantidad());
+        return ResponseEntity.ok(compra);
     }
 
     @GetMapping("/devolver/{id}")

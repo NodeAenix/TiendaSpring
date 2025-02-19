@@ -1,5 +1,6 @@
 package org.example.tiendaspring.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "producto")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Producto {
     @Id
     @Column(name = "id", nullable = false)

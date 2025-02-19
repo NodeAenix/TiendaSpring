@@ -20,7 +20,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "historial")
-@JsonIgnoreProperties({"cliente", "producto"})
 public class Historial {
     @Id
     @Column(name = "id", nullable = false)

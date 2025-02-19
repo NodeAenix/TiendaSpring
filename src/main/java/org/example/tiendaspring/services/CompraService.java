@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class CompraService {
@@ -58,7 +59,7 @@ public class CompraService {
             return "No existe la compra";
         }
 
-        int dias = historial.getFechaCompra().until(LocalDate.now()).getDays();
+        long dias = ChronoUnit.DAYS.between(historial.getFechaCompra(), LocalDate.now());
         if (dias > 30) {
             return "No se puede hacer la devolución: han pasado más de 30 días";
         }

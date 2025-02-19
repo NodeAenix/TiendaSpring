@@ -1,5 +1,6 @@
 package org.example.tiendaspring.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "cliente")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cliente {
     @Id
     @Column(name = "id", nullable = false)
@@ -42,9 +44,9 @@ public class Cliente {
     @NotNull(message = "La contraseña es obligatoria.")
     @Column(name = "password", nullable = false)
     @NotBlank(message = "La contraseña no puede estar vacía.")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]){8,}$",
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$",
              message = "La contraseña debe tener mínimo 8 carácteres"
-                     + "y debe incluir una minúscula, una mayúscula y un número.")
+                     + " y debe incluir una minúscula, una mayúscula y un número.")
     private String password;
 
     @Size(max = 15)
